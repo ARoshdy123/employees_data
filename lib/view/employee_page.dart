@@ -12,13 +12,14 @@ class EmployeePage extends StatefulWidget {
 
 class _EmployeePageState extends State<EmployeePage> {
   final EmployeeService _employeeService = EmployeeService();
-  List<Employee> employees = [];
+  List<Employee> employees = []; //verfiy empty list to add the employees data
   bool isLoading = false;
   @override
   void initState() {
     super.initState();
-    getEmployees();
+
   }
+  // function to get the employees from the service
   Future<void> getEmployees() async {
     setState(() {
       isLoading = true;
@@ -44,7 +45,7 @@ class _EmployeePageState extends State<EmployeePage> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : employees.isEmpty
-          ? const Center(child: Text('No employees found'))
+          ? const Center(child: Text('No employees found, Please press load the data'))
           : ListView.builder(
         itemCount: employees.length,
         itemBuilder: (context, index) {
@@ -56,6 +57,13 @@ class _EmployeePageState extends State<EmployeePage> {
             subtitle: Text(employee.email),
           );
         },
+      ),
+      // button when press will get the data.
+      floatingActionButton: FloatingActionButton.extended(onPressed: (){
+        getEmployees();
+      },
+        label: Text('Load the Data'),
+        icon: Icon(Icons.downloading_outlined),
       ),
     );
   }
